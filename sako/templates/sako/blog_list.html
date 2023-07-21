@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}blog{% endblock %}
+{% block content %}
+<h1>SakoBlogへようこそ🎵</h1>
+<a href="{% url 'new' %}">新規作成</a>
+
+
+<table class="table table-striped table-hover table-bordered">
+
+        
+    <thead>
+        <tr>
+            <th>No</th>
+            <th>作成日</th>
+            <th>コメント</th>
+            <th>アクション</th>
+            <th>画像</th>
+        </tr>
+    </thead>
+    {% for blog in object_list %}
+    <tr>
+        <td>{{ blog.id }}</td>
+        <td>{{ blog.createday }}</td>
+        <td>{{ blog.coment }} </td>
+       <td><img src="{{ blog.image.url }}" style="width:250px; height:200px;"></td>
+       <td>
+        <button class="btn btn-primary" onclick="location.href='{% url 'edit' pk=blog.pk %}'">編集</button>
+        <button class="btn btn-danger" onclick="location.href='{% url 'delete' pk=blog.pk %}'">削除</button>
+     </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{# ページの表示 #}
+{{ page_obj.number }} / {{ page_obj.paginator.num_pages }} ページ<br>
+
+{# 前へ #}
+{% if page_obj.has_previous %}
+<a href="?page=1">&laquo; 先頭</a>
+<a href="?page={{ page_obj.previous_page_number }}">前へ</a>
+{% endif %}
+
+{# 次へ #}
+{% if page_obj.has_next %}
+<a href="?page={{ page_obj.next_page_number }}">次へ</a>
+<a href="?page={{ page_obj.paginator.num_pages }}">最後 &raquo;</a>
+{% endif %}
+{% endblock %}
